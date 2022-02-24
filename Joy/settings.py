@@ -17,7 +17,11 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 # 템플릿 경로
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-
+# static 경로
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'v1',
     'v2',
+    'v3',
 ]
 
 # 'drf_yasg',
