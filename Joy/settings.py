@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'v1',
     'v2',
     'v3',
+    'v4',
 ]
 
 # 'drf_yasg',
