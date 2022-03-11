@@ -14,7 +14,7 @@ from django.views.generic import TemplateView
 #     response.write("<p>This is my first Django. </p>")
 #     return response
 
-# 실은 request.method 를 통해 HTTP 방식에 따라 처리를 해준다.
+# 실제로는 request.method 를 통해 HTTP 방식에 따라 처리를 해준다.
 # 이 예시는 함수형 뷰
 # def index(request):
 #     if request.method == 'GET':
