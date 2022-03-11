@@ -1,6 +1,7 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import render
-# from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -15,14 +16,14 @@ from django.views.generic import TemplateView
 
 # 실은 request.method 를 통해 HTTP 방식에 따라 처리를 해준다.
 # 이 예시는 함수형 뷰
-def index(request):
-    if request.method == 'GET':
-        response = HttpResponse()
-        response.write("<h1>Welcome</h1>")
-        response.write("<p>This is my first Django. </p>")
-        return response
+# def index(request):
+#     if request.method == 'GET':
+#         response = HttpResponse()
+#         response.write("<h1>Welcome</h1>")
+#         response.write("<p>This is my first Django. </p>")
+#         return response
 
-# 이것을 클래스형 뷰로 변경
+# 이것을 클래스형 뷰로 변경한 것
 class BaseView(View):
     def get(self, request, *args, **kwargs):
         response = HttpResponse()
@@ -30,50 +31,46 @@ class BaseView(View):
         response.write("<p>This is my first Django. </p>")
         return response
 
-# def index(request):
-#     return render(request, 'v2/index.html')
+
 class IndexView(View):
-    # template_name = "v2/index.html"
-    # return render(request, 'v2/index.html')
+    template_name = "v2/index.html"
 
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, World!')
+        return render(request, self.template_name)
 
-# def name(request):
-#     return render(request, 'v2/name.html', {'name':'Joy'})
+
+class HtmlView(TemplateView):
+    template_name = "v3/index.html"
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class NameView(TemplateView):
     template_name = "v2/name.html"
 
     def get_context_data(self, **kwargs):
         context = super(NameView, self).get_context_data(**kwargs)
-        print(context)
-        context['name'] = context['keyword']
         return context
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        """
+        GET 방식으로 요청이 들어오면 URL에 입력된 값을 context에 담아 template_name에 해당되는 html을 렌더링하도록 처리한다.
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
         context = self.get_context_data(**kwargs)
-        # Your code here
-        # Here request.POST is the same as self.request.POST
-        # You can also access all possible self variables
-        # like changing the template name for instance
-        bar = self.request.POST.get('keyword', None)
-        # if bar: self.template_name = 'v2/name.html'
-        print("-"*100)
-        print(context)
-        print(type(context))
-        # previous_foo = context['keyword']
-        context['name'] = "POST TEST"
-        print(context)
         return self.render_to_response(context)
 
-# def username(request, keyword):
-#     return render(request, 'v2/name.html', {'name':keyword})
-
-
-# class TemplateView(TemplateResponseMixin, View):
-#     template_name = 'some_app/some_template.html'
-#     def get(self, request, *args, **kwargs):
-#         context = get_context_from_somewhere(request, *args, **kwargs)
-#         return self.render_to_response(request, context)
+    def post(self, request, **kwargs):
+        """
+        POST 방식으로 들어오면 body의 내용을 context에 담아 template_name에 해당되는 html을 렌더링하도록 처리한다.
+        :param request:
+        :param kwargs:
+        :return:
+        """
+        context = self.get_context_data(**kwargs)
+        body = json.loads(request.body.decode('utf8'))
+        context['name'] = body['keyword']
+        return self.render_to_response(context)
 

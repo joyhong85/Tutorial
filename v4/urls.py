@@ -5,8 +5,7 @@ app_name = 'v4'
 urlpatterns = [
     # path('', index, name='index'),
     path('', BaseView.as_view()),
-    # path('', IndexView.as_view(), name='index'),
-    # path('name', name, name='name'),
-    path('name/<str:keyword>', NameView.as_view()),
-    # path('name/<str:keyword>', username, name='username'),
+    path('index', IndexView.as_view(), name='index'),
+    path('html', HtmlView.as_view(), name='html'),
+    path('name/<str:name>', NameView.as_view(), name='name'),
 ]
