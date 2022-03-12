@@ -70,7 +70,10 @@ class NameView(TemplateView):
         :return:
         """
         context = self.get_context_data(**kwargs)
-        body = json.loads(request.body.decode('utf8'))
-        context['name'] = body['keyword']
+        try:
+            body = json.loads(request.body.decode('utf8'))
+            context['name'] = body['keyword']
+        except:
+            pass
         return self.render_to_response(context)
 
