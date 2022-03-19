@@ -1,0 +1,16 @@
+{% extends "v5/base.html" %}
+
+{% block question %}
+    <p>
+        Basic Form 정보를 입력해 보세요!
+    </p>
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">OK</button>
+        </form>
+   </div>
+
+{% endblock question %}

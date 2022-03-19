@@ -1,0 +1,13 @@
+{% extends "v5/base.html" %}
+
+{% block result %}
+    <p>
+        입력 결과는 아래와 같습니다.
+    </p>
+    <li>이름 : {{ name }}</li>
+    <li>취미 : {{ hobby }}</li>
+    <p>
+        <a href="{% url 'v5:index' %}">돌아가기</a>
+    </p>
+
+{% endblock result %}
